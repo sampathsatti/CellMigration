@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.transforms as transforms
 import xml.etree.ElementTree
 import math
 import csv
@@ -94,9 +95,12 @@ plt.plot([0, 0], [-500, 500], 'k--')
 
 #figure showing first and last points only
 
+base = plt.gca().transData
+rot = transforms.Affine2D().rotate_deg(270)
+
 for i in range (1, len(finalPosX), 1):
     #if (initialPosX[i] > 850):
-    plt.plot([0, finalPosX[i]-initialPosX[i]], [0, finalPosY[i]-initialPosY[i]])
+    plt.plot([0, finalPosX[i]-initialPosX[i]], [0, finalPosY[i]-initialPosY[i]], 'k', transform=base+ rot)
     #print(finalPosX[i])
     if finalPosX[i]-initialPosX[i] < 0:
         forward = forward+1
@@ -109,7 +113,20 @@ print("Reverse: ", reverse)
 #plt.xlabel('Position along channel (um)', size=12)
 #plt.ylabel('Position across channel', size=12)
 #plt.title(r'Cell Migration', size=16)
-plt.axis([-600, 300, -500, 500], 'square')
+plt.axis([-1000, 1000, -1000, 1000], 'square')
+# set the x-spine (see below for more info on `set_position`)
+plt.gca().spines['left'].set_position('zero')
+
+# turn off the right spine/ticks
+plt.gca().spines['right'].set_color('none')
+plt.gca().yaxis.tick_left()
+
+# set the y-spine
+plt.gca().spines['bottom'].set_position('zero')
+
+# turn off the top spine/ticks
+plt.gca().spines['top'].set_color('none')
+plt.gca().xaxis.tick_bottom()
 plt.show()
 
 print(len(initialPosX))
