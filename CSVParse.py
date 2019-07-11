@@ -62,6 +62,8 @@ for i in range(1, len(after_x), 1):
     plt.scatter(after_x[i], after_y[i], c='tab:orange', s=50, alpha=0.7, edgecolors='none')
 # Specify Bounds
 plt.axis([-50, 350, 200, 800])
+plt.xticks([-50, 50, 150, 250, 350], fontsize=14)
+plt.yticks([200, 400, 600, 800], fontsize=14)
 # Specify Axis Labels
 from matplotlib.patches import Patch
 from matplotlib.lines import Line2D
@@ -72,8 +74,8 @@ legend_elements = [Line2D([0], [0], marker='o', color='w', label='100nM fMLP',
                           markerfacecolor='tab:orange', markersize=10),
                    ]
 
-plt.legend(handles = legend_elements,
-           loc='upper right', shadow=False)
+#plt.legend(handles = legend_elements,
+   #        loc='upper right', shadow=False)
 plt.xlabel('Position along channel (um)', size=16)
 plt.ylabel('Position across channel (um)', size=16)
 #plt.title('Scatter plot of cells', size=16)
@@ -104,9 +106,10 @@ legend_elements = [Line2D([0], [0], marker='o', color='w', label='100nM fMLP',
                    Line2D([0], [0], marker='o', color='w', label='0nM fMLP',
                           markerfacecolor='tab:orange', markersize=10),
                    ]
-plt.xticks([50, 100, 150, 200], ['Control', 'Control', '100nM', '100nM'])
-plt.legend(handles = legend_elements,
-           loc='upper right', shadow=False)
+plt.xticks([50, 100, 150, 200], ['Control', 'Control', '100nM', '100nM'], fontsize=14)
+plt.yticks([0, 100, 200, 300, 400, 500], fontsize=14)
+#plt.legend(handles = legend_elements,
+          # loc='upper right', shadow=False)
 #plt.xlabel('Position along channel (um)', size=16)
 plt.ylabel('Distance migrated (um)', size=16)
 #plt.title('Scatter plot of cells', size=16)
@@ -119,9 +122,10 @@ num_bins = 40
 n, bins, patches = plt.hist(before_x, num_bins, histtype=u'step', cumulative=1,  density=1, facecolor='tab:blue',  linewidth=2.5, alpha=0.6)
 n, bins, patches = plt.hist(after_x, num_bins,  histtype=u'step', cumulative=1, density=1, facecolor='tab:orange', linewidth=2.5, alpha=0.6)
 plt.ticklabel_format(axis='y', style='sci', scilimits=(0, 0))
+plt.xticks([0, 100, 200, 300, 400], fontsize=14)
+plt.yticks(fontsize=14)
 
-
-plt.axis([0, 350, 0, 1.05])
+plt.axis([0, 400, 0, 1.05])
 plt.ticklabel_format(axis='y', style='sci', scilimits=(0,0))
 plt.xlabel('Position along axis', size=16)
 plt.ylabel('Cumulative distribution function', size=16)
@@ -132,8 +136,8 @@ legend_elements = [Line2D([0], [0], marker='o', color='w', label='100nM fMLP',
                           markerfacecolor='tab:orange', markersize=10),
                    ]
 
-plt.legend(handles = legend_elements,
-           loc='upper right', shadow=False)
+#plt.legend(handles = legend_elements,
+      #     loc='upper right', shadow=False)
 
 plt.show()
 
