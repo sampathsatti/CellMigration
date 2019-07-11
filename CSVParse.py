@@ -2,7 +2,7 @@ import numpy as np
 
 import scipy.stats
 import matplotlib.pyplot as plt
-
+import random
 from matplotlib.lines import Line2D
 import seaborn as sns
 import pandas as pd
@@ -23,9 +23,10 @@ after_x = after_x[1:]
 after_y = after[:, 2]
 after_y = after_y[1:]
 
+#initialize CSV data to origin/backstop
+
 device2_x = device2[:, 1]
 device2_x = device2_x[1:]
-
 
 for i in range(0, len(device2_x)-1, 1):
     device2_x[i] = 1011-device2_x[i]
@@ -44,21 +45,21 @@ device12_x = device12_x[1:]
 for i in range(0, len(device12_x)-1, 1):
     device12_x[i] = 1008-device12_x[i]
 
+#translation for better scatter plot
 
+for i in range(0, len(before_x), 1):
+    before_x[i]= 850-before_x[i]
+    before_y[i]= before_y[i]-100
 
-print(np.mean(before_x))
+for i in range(0, len(after_x), 1):
+    after_x[i] = 835 - after_x[i]
+    after_y[i] = after_y[i]
 
-print(np.mean(after_x))
-
-print(np.std(before_x))
-
-print(np.std(after_x))
-
-
+#plot raw data scatter plot
 for i in range(1, len(before_x), 1):
-    plt.scatter(850-before_x[i], before_y[i]-100, c='tab:blue', s=50, alpha=0.7, edgecolors='none')
+    plt.scatter(before_x[i], before_y[i], c='tab:blue', s=50, alpha=0.7, edgecolors='none')
 for i in range(1, len(after_x), 1):
-    plt.scatter(835-after_x[i], after_y[i], c='tab:orange', s=50, alpha=0.7, edgecolors='none')
+    plt.scatter(after_x[i], after_y[i], c='tab:orange', s=50, alpha=0.7, edgecolors='none')
 # Specify Bounds
 plt.axis([-50, 350, 200, 800])
 # Specify Axis Labels
@@ -79,12 +80,38 @@ plt.ylabel('Position across channel (um)', size=16)
 # Voila
 plt.show()
 
+#plot custom beehive scatter plot
 
-for i in range(0, len(before_x)-1, 1):
-    before_x[i] = 850-before_x[i]
 
-for i in range(0, len(after_x)-1, 1):
-    after_x[i] = 835-after_x[i]
+
+
+for i in range(1, len(before_x), 1):
+    plt.scatter(150 + random.uniform(-15, 15), before_x[i], c='tab:blue', s=50, alpha=0.7, edgecolors='none')
+for i in range(1, len(after_x), 1):
+    plt.scatter(50 + random.uniform(-15, 15), after_x[i], c='tab:orange', s=50, alpha=0.7, edgecolors='none')
+for i in range(1, len(device9_x), 1):
+        plt.scatter(100+random.uniform(-15, 15), device9_x[i], c='tab:orange', s=50, alpha=0.7, edgecolors='none')
+for i in range(1, len(device2_x), 1):
+        plt.scatter(200+random.uniform(-15, 15), device2_x[i], c='tab:blue', s=50, alpha=0.7, edgecolors='none')
+# Specify Bounds
+plt.axis([0, 250, 0, 500])
+# Specify Axis Labels
+from matplotlib.patches import Patch
+from matplotlib.lines import Line2D
+
+legend_elements = [Line2D([0], [0], marker='o', color='w', label='100nM fMLP',
+                          markerfacecolor='tab:blue', markersize=10),
+                   Line2D([0], [0], marker='o', color='w', label='0nM fMLP',
+                          markerfacecolor='tab:orange', markersize=10),
+                   ]
+plt.xticks([50, 100, 150, 200], ['Control', 'Control', '100nM', '100nM'])
+plt.legend(handles = legend_elements,
+           loc='upper right', shadow=False)
+#plt.xlabel('Position along channel (um)', size=16)
+plt.ylabel('Distance migrated (um)', size=16)
+#plt.title('Scatter plot of cells', size=16)
+# Voila
+plt.show()
 
 
 num_bins = 40
@@ -121,25 +148,3 @@ plt.violinplot(data)
 plt.ylabel('Distance of migration from backstop', size=16)
 #plt.title('Cell migration after alignment', size=16)
 plt.show()
-
-
-d = {'col1': before_x, 'col2': device2_x, 'col 3': device12_x, 'col 4': after_x}
-frame = pd.DataFrame.from_dict(d, orient='index')
-frame = frame.transpose()
-
-sns.set_style("whitegrid")
-ax = sns.swarmplot(x="day", y="total_bill", data='frame')
-plt.show()
-
-# T Test stuff
-
-alpha = 0.05
-k = len(after_x)+len(before_x)-2
-print(k)
-x1 = np.mean(after_x)
-x2 = np.mean(before_x)
-s1 = np.std(after_x)
-s2 = np.std(before_x)
-
-t = (x1-x2) / ( np.sqrt( ((s1*s1)/len(after_x)) + ((s2*s2)/len(before_x)) ))
-print(t)
