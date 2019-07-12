@@ -3,14 +3,12 @@ import matplotlib.pyplot as plt
 import xml.etree.ElementTree
 import math
 import csv
+import brewer2mpl
 
-e = xml.etree.ElementTree.parse('Neutrophils_fMLP_Tracks_12.xml').getroot()
+e = xml.etree.ElementTree.parse('Neutrophils_fMLP_Tracks_5.xml').getroot()
 
-# Made a test change to see if its syncing
-
-#made another minor change
-
-#MOAR FUCKEN changes
+bmap = brewer2mpl.get_map('Set2', 'qualitative', 8)
+colors = bmap.mpl_colors
 
 track = int(0)
 x_origin = float(0)
@@ -94,15 +92,15 @@ plt.show()
 
 plt.figure(2)
 
-plt.plot([-600, 300], [0, 0], 'k--')
-plt.plot([0, 0], [-500, 500], 'k--')
+
 
 
 #figure showing first and last points only
 
 for i in range (1, len(finalPosX), 1):
     #if (initialPosX[i] > 850):
-    plt.plot([0, finalPosX[i]-initialPosX[i]], [0, finalPosY[i]-initialPosY[i]])
+    plt.plot([0, finalPosY[i]-initialPosY[i]], [0,  -finalPosX[i]+initialPosX[i]], color=colors[7])
+    plt.plot([finalPosY[i]-initialPosY[i]], [-finalPosX[i]+initialPosX[i]], 'o', alpha = 0.8, color=colors[1], label='point')
     #print(finalPosX[i])
     if finalPosX[i]-initialPosX[i] < 0:
         forward = forward+1
@@ -115,7 +113,14 @@ print("Reverse: ", reverse)
 #plt.xlabel('Position along channel (um)', size=12)
 #plt.ylabel('Position across channel', size=12)
 #plt.title(r'Cell Migration', size=16)
-plt.axis([-600, 300, -500, 500], 'square')
+
+plt.gca().spines['right'].set_visible(False)
+plt.gca().spines['top'].set_visible(False)
+plt.gca().spines['left'].set_position('zero')
+plt.gca().spines['bottom'].set_position('zero')
+plt.axis([-350, 350, -250, 800])
+plt.xticks([-300, -150, 0, 150, 300])
+plt.gca().set_aspect('equal')
 plt.show()
 
 print(len(initialPosX))
